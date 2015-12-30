@@ -42,6 +42,10 @@ public class DexDiffer {
         while (iter.hasNext()) {
             DexBackedClassDef newClazz = iter.next();
             Iterator<DexBackedClassDef> iter2 = oldset.iterator();
+//            if (!isValidClassName(newClazz.getType())) {
+//        		continue;
+//        	}
+            contains = false;
             while (iter2.hasNext()) {
                 DexBackedClassDef oldClazz = iter2.next();
                 if (newClazz.equals(oldClazz)) {
@@ -50,14 +54,21 @@ public class DexDiffer {
                     contains = true;
                     break;
                 }
-                if (!contains) {
-                    info.addAddedClasses(newClazz);
-                }
+            }
+            if (!contains) {
+                info.addAddedClasses(newClazz);
             }
         }
         return info;
     }
     
+//    private boolean isValidClassName(String name) {
+//    	if (name.contains("ParameterInjector") || name.contains("BindingStartup")) {
+//    		return false;
+//    	}
+//    	return true;
+//    }
+//    
     private HashSet<DexBackedClassDef> getClassSet(File apkFile) throws IOException{
     	ZipFile localZipFile = new ZipFile(apkFile);
     	Enumeration localEnumeration = localZipFile.entries();
